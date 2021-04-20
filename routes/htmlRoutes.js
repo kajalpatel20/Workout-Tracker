@@ -1,4 +1,4 @@
-const express = require("express");
+
 const path = require("path");
 const router = require("express").Router();
 
@@ -9,7 +9,7 @@ router.get("/", (req,res) => {
 
 //display exercise page 
 router.get("/exercise", (req,res) => {
-    res.sendFile(path.join(_dirname, "../public/exercise.html"));
+    res.sendFile(path.join(__dirname, "../public/exercise.html"));
 });
 
 //display stats page
