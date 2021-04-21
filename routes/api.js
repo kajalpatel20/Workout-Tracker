@@ -2,7 +2,7 @@ const router = require("express").Router();
 const Workout = require("../models/workout.js");
 const { route } = require("./htmlRoutes.js");
 
-router.post("/workouts", ({ body }, res) => {
+router.post("/api/workouts", (req, res) => {
     Workout.create({})
         .then((workout) => {
             res.json(workout)
@@ -11,7 +11,7 @@ router.post("/workouts", ({ body }, res) => {
             res.json(err)
         })
 });
-router.get("/workouts", (req, res) => {
+router.get("/api/workouts", (req, res) => {
     Workout.aggregate([
         {
             $addFields: {
@@ -30,11 +30,11 @@ router.get("/workouts", (req, res) => {
         })
 });
 
-router.put("/workouts/:id", ({ params, body }, res) => {
+router.put("/api/workouts/:id", (req, res) => {
     console.log('PARAMS', req.params)
     Workout.findByIdAndUpdate(
-        { _id: params.id },
-        { $push: { exercise: body } },
+        req.params.id,
+        { $push: { exercise: req.body } },
         { new: true, runValidators: true }
     )
         .then((workout) => {
@@ -44,14 +44,12 @@ router.put("/workouts/:id", ({ params, body }, res) => {
             res.json(e)
         })
 });
-router.get("/workouts/range", (req, res) => {
+router.get(`/api/workouts/range`, (req, res) => {
     Workout.aggregate([
         {
             $addFields: {
                 totalDuration:
-                {
-                    $sum: '$exercise.duration'
-                },
+                    { $sum: '$exercise.duration' },
                 totalWeight:
                     { $sum: '$exercises.weight' }
             }
