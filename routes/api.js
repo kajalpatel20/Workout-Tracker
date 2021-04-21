@@ -21,8 +21,6 @@ router.get("/api/workouts", (req, res) => {
       res.json(e)
   })
 });
-
-
 router.post("/api/workouts", (req, res) => {
         Workout.create({})
             .then((workout) => {
